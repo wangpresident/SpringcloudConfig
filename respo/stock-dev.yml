@@ -1,1 +1,15 @@
 
+---
+#开发环境配置
+server:
+  #端口
+  port: 7762
+spring:
+  profiles: dev
+  #数据源
+  datasource:
+    stock:
+      # 使用druid数据源
+      url: jdbc:mysql://10.25.24.137:3306/stock?useUnicode=true&characterEncoding=utf-8&useSSL=true&autoReconnect=true
+      username: root
+      password: y2iaciej
