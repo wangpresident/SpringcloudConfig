@@ -1,0 +1,234 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+
+#公共配置
+server:
+  #端口号
+  port: 80
+  context-path: /
+spring:
+  #激活哪一个环境的配置文件
+  application:
+    name: present-service
+  profiles:
+    active: dev
+
+ #数据源
+  datasource:
+    # mysql驱动
+    driverClassName: com.mysql.jdbc.Driver
+    # oracle驱动
+    # driverClassName: oracle.jdbc.driver.OracleDriver
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    # 初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    # 合并多个DruidDataSource的监控数据
+    #useGlobalDataSourceStat: true
+
+#mybatis
+mybatis:
+  type-aliases-package: com.ztzq.present.dao
+  mapper-locations: classpath:mapper/*.xml
+  mapUnderscoreToCamelCase: true
+  configuration:
+    log-impl: org.apache.ibatis.logging.log4j.Log4jImpl
+
+#分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  row-bounds-with-count: false
+
+accountIsLogin:
+  url: http://10.25.24.145:3004/reqxml
+
+---
+#开发环境配置
+server:
+  #端口
+  port: 8093
+spring:
+  profiles: dev
+  #数据源
+  datasource:
+    url: jdbc:mysql://10.25.24.137:3306/activity?useUnicode=true&characterEncoding=utf-8&useSSL=true&autoReconnect=true
+    username: root
+    password: y2iaciej
+    #password: 123456
+#redis配置
+jedis:
+  pool:
+    # Redis服务器地址 仿真
+    host: 10.25.24.137
+    # Redis服务器连接端口
+    port: 6379
+    password: y2iaciej
+    config:
+      # 最大链接数
+      maxTotal: 200
+      # 连接池中的最大空闲连接
+      maxIdle: 10
+      # 连接池最大连接数（使用负值表示没有限制）
+      maxWaitMillis: 100000
+#日志
+logging:
+  config: classpath:log/logback-jk.xml
+  path: log
+#Kafka配置
+kafka:
+  consumer:
+    config:
+      timeout: 15000
+      concurrency: 3
+      servers: 10.253.106.164:9092
+      msginterval: 100
+      msgtimeout: 15000
+      presentGroup: presentGroup
+      offset: earliest
+    topic:
+      registerComplete: registerComplete
+
+---
+#测试环境配置
+server:
+  #端口
+  port: 8093
+spring:
+  profiles: test
+  #数据源
+  datasource:
+    url: jdbc:mysql://10.25.24.137:3306/product?useUnicode=true&characterEncoding=utf-8&useSSL=true&autoReconnect=true
+    username: root
+    password: y2iaciej
+#日志
+logging:
+  config: classpath:log/logback-jk.xml
+  path: log
+##Kafka配置
+#kafka:
+#  config:
+#    timeout: 15000
+#    concurrency: 3
+#    servers: 10.253.106.164:9092
+#    msginterval: 100
+#    msgtimeout: 15000
+#    group: level2_plus_test_20170710
+#    offset: earliest
+#
+##redis配置
+jedis:
+  pool:
+    # Redis服务器地址 仿真
+    host: 10.25.24.137
+    # Redis服务器连接端口
+    port: 6379
+    password: y2iaciej
+    config:
+      # 最大链接数
+      maxTotal: 200
+      # 连接池中的最大空闲连接
+      maxIdle: 10
+      # 连接池最大连接数（使用负值表示没有限制）
+      maxWaitMillis: 100000
+
+---
+#仿真环境配置
+server:
+  #端口
+  port: 9094
+spring:
+  profiles: fzhj
+  #数据源
+  datasource:
+    url: jdbc:mysql://10.253.0.77:3306/activity?useUnicode=true&characterEncoding=utf-8&useSSL=true&autoReconnect=true
+    username: root
+    password: y2iaciej
+##日志
+logging:
+  config: classpath:log/logback-jk.xml
+  path: /usr/local/presentCompponent/logs
+##Kafka配置
+#kafka:
+#  config:
+#    timeout: 15000
+#    concurrency: 3
+#    servers: 10.253.106.164:9092
+#    msginterval: 100
+#    msgtimeout: 15000
+#    group: level2_plus_test_20170710
+#    offset: earliest
+#
+##redis配置
+jedis:
+  pool:
+    # Redis服务器地址 仿真
+    host: 10.139.50.75
+    # Redis服务器连接端口
+    port: 6379
+    password: y2iaciej
+    config:
+      # 最大链接数
+      maxTotal: 200
+      # 连接池中的最大空闲连接
+      maxIdle: 10
+      # 连接池最大连接数（使用负值表示没有限制）
+      maxWaitMillis: 100000
+
+---
+#生产環境
+server:
+  #端口
+  port: 9095
+spring:
+  profiles: pro
+  #数据源
+  datasource:
+    url: jdbc:mysql://10.253.14.239:3306/product?useUnicode=true&characterEncoding=utf-8&useSSL=true&autoReconnect=true
+    username: root
+    password: y2iaciej
+#日志
+logging:
+  config: classpath:log/logback-jk.xml
+  path: /usr/local/presentCompponent/logs
+jedis:
+  pool:
+    # Redis服务器地址 生产
+    # host: 10.253.108.16
+    # Redis服务器地址 仿真
+    host: 10.253.108.16
+    # Redis服务器连接端口
+    port: 6379
+    # Redis服务器连接密码（默认为空）
+    password: 30gmcyT+8qllyhy
+    config:
+      # 最大链接数
+      maxTotal: 200
+      # 连接池中的最大空闲连接
+      maxIdle: 10
+      # 连接池最大连接数（使用负值表示没有限制）
+      maxWaitMillis: 100000
