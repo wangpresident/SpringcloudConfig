@@ -4,7 +4,7 @@
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://10.25.24.137:8761/eureka/,http://10.29.181.16:8761/eureka/
 
 ---
 #开发环境配置
